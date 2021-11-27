@@ -20,15 +20,15 @@
 <script>
 import axios from 'axios';
 export default {
-  
-data: { 
+
+data: function() {
+  return { 
 		authorNameSearchString: "",
 		photoFeed: null
-	},
+	};
+},
 mounted() {
-  axios
-    .get('https://picsum.photos/v2/list?page=2&limit=10')
-    .then(response => {
+  axios.get('https://picsum.photos/v2/list?page=2&limit=10').then(response => {
       this.photoFeed = response.data;
     })
     .catch(error => console.log(error))
