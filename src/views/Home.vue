@@ -1,27 +1,63 @@
 <template>
+
+<div id="app-instasearch">
   <h1> Photo finder</h1>
   <div id="app-instasearch">
     <div class="input-container">
-      <input ty[e="text" placeholder="Type a name" />]
+      <input type="text" placeholder="Type a name" v-model="authorNameSearchString" />
     </div>
     <ul>
-      <li class="photo">
-        <img src="" />
-        <span class="author"> Some Names </span>
+      <li class="photo" v-for="photo in filteredPhotoFeed" v-bind:key="photo.id">
+        <img v-bind:src="photo.download_url" />
+        <span class="author">{{ photo.author }} </span>
         </li>
     </ul>
   </div>
+</div>
+
 </template>
 
 <script>
-var instasearchApp = new Vue({
-  el: '#app=instasearch',
+import axios from 'axios';
+export default {
+  
+data: { 
+		authorNameSearchString: "",
+		photoFeed: null
+	},
+mounted() {
+  axios
+    .get('https://picsum.photos/v2/list?page=2&limit=10')
+    .then(response => {
+      this.photoFeed = response.data;
+    })
+    .catch(error => console.log(error))
+},
+computed: {
 
-  data: {
-    authorNameSearchString: "",
-    photoFeed: null 
+  filteredPhotoFeed: function () {
+
+    var photos = this.photoFeed;
+    var authorNameSearchString = this.authorNameSearchString;
+
+    if(!authorNameSearchString){
+      return photos;
+    }
+
+    searchString = authorNameSearchString.trim().toLowerCase();
+
+    photos = photos.filter(function(item){
+      if(item.author.toLowerCase().indexOf(authorNameSearchString) !== -1){
+        return item;
+      }
+    })
+
+    return photos;
   }
-})
+},
+
+}
+
 </script>
 
 <style>
