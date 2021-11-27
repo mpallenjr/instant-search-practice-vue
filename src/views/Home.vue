@@ -44,7 +44,7 @@ computed: {
       return photos;
     }
 
-    searchString = authorNameSearchString.trim().toLowerCase();
+    this.searchString = authorNameSearchString.trim().toLowerCase();
 
     photos = photos.filter(function(item){
       if(item.author.toLowerCase().indexOf(authorNameSearchString) !== -1){
